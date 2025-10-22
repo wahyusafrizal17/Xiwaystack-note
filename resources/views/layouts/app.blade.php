@@ -117,6 +117,12 @@
                             <span class="menu-title text-truncate">Rekening Bank</span>
                         </a>
                     </li>
+                    <li class="nav-item {!!(Request::is('expenses*')) ? ' active' : '' !!}">
+                        <a class="d-flex align-items-center" href="{{ route('expenses.index') }}">
+                            <i data-feather="dollar-sign"></i>
+                            <span class="menu-title text-truncate">Pengeluaran</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf

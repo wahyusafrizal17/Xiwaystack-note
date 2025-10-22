@@ -41,17 +41,17 @@
                         </div>
                     </div>
                     
-                    <!-- Total Users -->
+                    <!-- Total Expenses -->
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="card">
                             <div class="card-body text-center">
-                                <div class="avatar bg-light-success mb-2">
+                                <div class="avatar bg-light-danger mb-2">
                                     <div class="avatar-content">
-                                        <i class="feather icon-users text-success font-medium-5"></i>
+                                        <i class="feather icon-dollar-sign text-danger font-medium-5"></i>
                                     </div>
                                 </div>
-                                <h3 class="fw-bolder mb-1">{{ $totalUsers }}</h3>
-                                <p class="card-text">Total Users</p>
+                                <h3 class="fw-bolder mb-1">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</h3>
+                                <p class="card-text">Total Pengeluaran</p>
                             </div>
                         </div>
                     </div>
@@ -172,7 +172,80 @@
                     </div>
                 </div>
             </section>
+            
+            <!-- Monthly Chart -->
+            <section id="monthly-chart">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Grafik Pengeluaran dan Pemasukan per Bulan</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="monthlyChart" height="100"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Monthly Chart Data
+    const monthlyData = @json($monthlyData);
+    
+    const ctx = document.getElementById('monthlyChart').getContext('2d');
+    const monthlyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: monthlyData.months,
+            datasets: [{
+                label: 'Pemasukan (Jokian)',
+                data: monthlyData.income,
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                tension: 0.1,
+                fill: true
+            }, {
+                label: 'Pengeluaran',
+                data: monthlyData.expenses,
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Trend Pengeluaran dan Pemasukan 12 Bulan Terakhir'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + value.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+            }
+        }
+    });
+</script>
+@endpush
 @endsection

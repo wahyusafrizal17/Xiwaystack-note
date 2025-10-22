@@ -27,4 +27,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('jokis/{joki}/whatsapp', [App\Http\Controllers\JokiController::class, 'whatsapp'])->name('jokis.whatsapp');
     
     Route::resource('bank-accounts', App\Http\Controllers\BankAccountController::class);
+    Route::resource('expenses', App\Http\Controllers\ExpenseController::class);
 });
