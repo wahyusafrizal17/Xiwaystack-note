@@ -126,20 +126,13 @@ class JokiController extends Controller
             'price' => ['required', 'integer', 'min:0'],
             'customer_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:30'],
-            'dp_amount' => ['required', 'integer', 'min:0'],
+            'dp_amount' => ['nullable', 'integer', 'min:0'],
             'bank_account_id' => ['nullable', 'exists:bank_accounts,id'],
             'status' => ['required', 'in:pending,in_progress,completed,cancelled'],
             'notes' => ['nullable', 'string'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
-        $validator->after(function ($v) use ($request) {
-            $price = (int) $request->input('price', 0);
-            $dp = (int) $request->input('dp_amount', 0);
-            if ($price > 0 && $dp < (int) floor(0.5 * $price)) {
-                $v->errors()->add('dp_amount', 'DP minimal 50% dari harga.');
-            }
-        });
 
         return $validator->validate();
     }

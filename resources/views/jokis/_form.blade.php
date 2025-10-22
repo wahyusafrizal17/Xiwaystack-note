@@ -52,7 +52,7 @@
   </div>
 
   <div class="form-group row mt-2">
-      <label class="col-sm-2 col-form-label">DP (>=50%)</label>
+      <label class="col-sm-2 col-form-label">DP</label>
       <div class="col-sm-10">
          {{ Form::number('dp_amount',null,['class'=>'form-control','placeholder'=>'DP','min'=>0])}}
          @if ($errors->has('dp_amount')) <span class="help-block" style="color:red">{{ $errors->first('dp_amount') }}</span> @endif
